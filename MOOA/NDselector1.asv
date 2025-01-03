@@ -1,0 +1,29 @@
+function [Gbest,nGbest]=NDselector(Population,num)
+
+    N=length(Population);
+    [FrontNo,~] = NDSort(Population.objs,size(Population,1));
+    CrowdDis = CrowdingDistance1(Population.objs,FrontNo);
+    nGbest=[];
+    Gbest=[];
+    % for i=1:max(FrontNo)
+        % iGbest=find(FrontNo==i);
+        CrowdDis=CrowdDis./FrontNo;
+        [value,Rank]=sort(CrowdDis,'descend');
+    %         find(value~=Inf,1,'first')
+        last=num+1-length(nGbest);
+        if last>0
+            if length(Rank)>=last
+                nGbest=[nGbest Rank(1:last)];
+            else 
+                nGbest=[nGbest Rank(1:end)];
+            end
+        end
+        if length(nGbest)==(num+1)
+            Gbest=Population(nGbest(1));
+            return; 
+        end          
+    % end
+    if isempty(Gbest)
+            a=1;
+    end
+end
